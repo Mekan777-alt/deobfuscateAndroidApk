@@ -1,0 +1,19 @@
+services:
+  deobfuscator:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: sh utils/start_deo.sh
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL_NAME=${OPENAI_MODEL_NAME:-gpt-4o}
+      - OPENAI_MAX_TOKENS=${OPENAI_MAX_TOKENS:-4000}
+      - OPENAI_TEMPERATURE=${OPENAI_TEMPERATURE:-0.3}
+      - OPENAI_REQUEST_TIMEOUT=${OPENAI_REQUEST_TIMEOUT:-120}
+      - THREAD_COUNT=${THREAD_COUNT:-5}
+      - INPUT_DIR=/app/input
+      - OUTPUT_DIR=/app/output
+    volumes:
+      - ${INPUT_DIR}:/app/input
+      - ${OUTPUT_DIR}:/app/output
+    restart: on-failure
